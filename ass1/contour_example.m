@@ -1,5 +1,9 @@
 % example code to make a contour plot of  a function
+%
+%
+
 % example function
+%
 lambda1 = 5;
 lambda2 = 3;
 omega=3;

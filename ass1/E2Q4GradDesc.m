@@ -1,8 +1,12 @@
 function E2Q4GradDesc(eta, steps)
+%     xmin = -2; xmax = 2; ymin = -1; ymax = 3;
+    xmin = -4; xmax = 4; ymin = -2; ymax = 5;
+
+
     %contourplot h    
     h = @(x,y) 100*(y-x.^2).^2 + (1-x).^2;
-    x = linspace(-2,2);
-    y = linspace(-1,3);
+    x = linspace(xmin,xmax);
+    y = linspace(ymin,ymax);
 
     [X,Y] = meshgrid(x,y);
     Z = h(X,Y);    
@@ -11,8 +15,10 @@ function E2Q4GradDesc(eta, steps)
     
     %gradient descent
     cn = 0;
-    x1 = 4*rand()-2
-    y1 = 4*rand()-1
+%     x1 = (xmax-xmin)*rand()+xmin
+%     y1 = (ymax-ymin)*rand()+ymin
+    x1 = 0
+    y1 = 0
     xmat = 0;
     ymat = 0;
     while cn < steps
