@@ -15,7 +15,6 @@ for r = 0:m
 end
 
 A = A + l*eye(length(A));
-
 w = A\T
 
 % z = @(x,w,m) sum((x.^m).*w');
