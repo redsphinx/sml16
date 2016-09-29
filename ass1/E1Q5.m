@@ -1,5 +1,5 @@
 l1 = 1/exp(40);
-l2 = 1/exp(20);
+l2 = 1/exp(0);
 
 erms_train = ERMS2(train_x, train_y, l1, l2, train_x, train_y);
 erms_test = ERMS2(train_x, train_y, l1, l2, test_x, test_y);

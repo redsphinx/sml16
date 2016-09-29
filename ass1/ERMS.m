@@ -17,7 +17,7 @@ function evec = ERMS(x,y,M,xx,yy)
 
         E = E/2;
 
-        Erms = sqrt(2 * E/length(x));
+        Erms = sqrt(2 * E/length(xx));
         evec = [evec Erms];
         
     end
