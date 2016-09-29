@@ -1,12 +1,12 @@
-% function evec = ERMS(x,y,M,l)
-function evec = ERMS(x,y,M,xx,yy)
+function evec = ERMS(x,y,M,l,xx,yy)
+% function evec = ERMS(x,y,M,xx,yy)
     evec = 0;
     for m=0:M
         mcon = 0:m;
         
         % getting weights
-        w = E1Q2PolCurFit(x, y, m);
-%         w = E1Q5PolCurFit(x, y, m, l);
+%         w = E1Q2PolCurFit(x, y, m);
+        w = E1Q5PolCurFit(x, y, m, l);
 
         % approximation with weights
         z = @(x,w,m) sum((x.^m).*w');
