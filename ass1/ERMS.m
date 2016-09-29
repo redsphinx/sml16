@@ -4,7 +4,7 @@ function evec = ERMS(x,y,M,xx,yy)
         mcon = 0:m;
         
         % getting weights
-        w = E1Q2PolCurFit(x, y, m);
+        w = E1Q2PolCurFit(x, y, m)
 
         % approximation with weights
         z = @(x,w,m) sum((x.^m).*w');
