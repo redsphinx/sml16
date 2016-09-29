@@ -12,3 +12,6 @@ plot(train_x, train_y, 'o');
 ylim([-.25 2.25]);
 hold off
 
+xlabel('x')
+ylabel('t')
+title('N = 10')

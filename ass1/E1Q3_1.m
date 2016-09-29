@@ -1,4 +1,4 @@
-m = 5;
+m = 9;
 x = train_x;
 y = train_y;
 mcon = 0:m;
@@ -20,4 +20,4 @@ hold on
 plot(x,y,'o')
 
 legend('function f', 'polynomial', 'observations', 'Location', 'southwest')
-title(['m = ' num2str(m) ])
+title(['M = ' num2str(m) ])
