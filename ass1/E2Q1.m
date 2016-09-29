@@ -5,3 +5,7 @@ y = linspace(-1,3);
 
 [X,Y] = meshgrid(x,y)
 surf(X, Y, h(X,Y))
+
+xlabel('x')
+ylabel('y')
+zlabel('z')

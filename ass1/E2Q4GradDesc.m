@@ -17,10 +17,10 @@ function E2Q4GradDesc(eta, steps)
     cn = 0;
 %     x1 = (xmax-xmin)*rand()+xmin
 %     y1 = (ymax-ymin)*rand()+ymin
-    x1 = 0
-    y1 = 0
-    xmat = 0;
-    ymat = 0;
+    x1 = 1.5;
+    y1 = -1.5;
+    xmat = x1;
+    ymat = y1;
     while cn < steps
         xn = x1 - eta*(-400*x1*y1 + 400*x1^3 + 2*x1 -2);
         yn = y1 - eta*(200*y1 - 200*x1^2);
@@ -31,10 +31,11 @@ function E2Q4GradDesc(eta, steps)
         cn = cn + 1;
     end
     
-    xmat = xmat(2:length(xmat));
-    ymat = ymat(2:length(ymat));
+%     xmat = xmat(2:length(xmat));
+%     ymat = ymat(2:length(ymat));
     
     plot(xmat,ymat,'k-o');
-    xmat(end)
-    ymat(end)
+    xlabel('x')
+    ylabel('y')
+    title(['start x=1.5, y=-1.5, steps=10000, eta=' num2str(eta)])
 end
