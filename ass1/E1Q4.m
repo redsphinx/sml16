@@ -10,3 +10,5 @@ erms_other = ERMS(train_x, train_y, M, other_x, other_y);
 xax = 0:M;
 plot(xax, erms_train, 'bo-', xax, erms_test, 'ro-', xax, erms_other, 'go-')
 legend('Training', 'Test', 'D_{40}')
+ylabel('E_{RMS}')
+xlabel('M')

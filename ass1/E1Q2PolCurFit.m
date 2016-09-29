@@ -16,9 +16,4 @@ end
 
 w = A\T;
 
-% z = @(x,w,m) sum((x.^m).*w');
-% mcon = [0:m];
-% fun = @(x) z(x,w,mcon);
-% fplot(fun, [0, 1])
-
 end

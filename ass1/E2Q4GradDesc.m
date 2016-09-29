@@ -35,4 +35,6 @@ function E2Q4GradDesc(eta, steps)
     ymat = ymat(2:length(ymat));
     
     plot(xmat,ymat,'k-o');
+    xmat(end)
+    ymat(end)
 end

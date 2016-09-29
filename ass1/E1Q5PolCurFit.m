@@ -1,6 +1,7 @@
 function w = E1Q5PolCurFit(x, t, m, l)
 
 T = zeros(m+1,1);
+l
 
 for i = 0:m
     T(i+1) = sum(t.*x.^(i));

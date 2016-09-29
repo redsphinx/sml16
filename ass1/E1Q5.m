@@ -1,8 +1,12 @@
-M=10;
-l=0.1;
-erms_train = ERMS(train_x, train_y, M, l, train_x, train_y);
-erms_test = ERMS(train_x, train_y, M, l, test_x, test_y);
+l1 = 1/exp(40);
+l2 = 1/exp(20);
 
-plot(0:M, erms_train, 'bo-', 0:M, erms_test, 'ro-')
+erms_train = ERMS2(train_x, train_y, l1, l2, train_x, train_y);
+erms_test = ERMS2(train_x, train_y, l1, l2, test_x, test_y);
+
+plot(log(l1):log(l2), erms_train, 'bo-', log(l1):log(l2), erms_test, 'ro-')
 legend('Training', 'Test')
-title(['m = ' num2str(M) ', lambda = ' num2str(l)])
+title('m = 9 ')
+
+ylabel('E_{RMS}')
+xlabel('ln lambda')
