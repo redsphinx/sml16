@@ -12,11 +12,10 @@ mu_ml = mean(data);
 s = zeros(2);
 
 for i=1:n
-%     Sigma_ML = Sigma_ML + (X(i,:)'-mu_ML)*(X(i,:)'- mu_ML)';
     d = (data(i,:)' - mu_ml') * (data(i,:)' - mu_ml')';
     s = s + d;
 end
 
-sigma_ml = d / n
+sigma_ml = s / n
 
-sigma_ub = d / (n-1)
+sigma_ub = s / (n-1)
