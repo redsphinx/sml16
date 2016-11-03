@@ -3,8 +3,6 @@ E1P2Q1
 
 data = load('data.txt', '-ascii');
 
-mu_t = load('mu_t', '-ascii');
-
 n = length(data)
 
 mu_ml = mean(data);
