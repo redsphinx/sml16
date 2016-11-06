@@ -13,3 +13,6 @@ end
 plot(1:1:n, m_all)
 hold on
 plot(1:n, a, 'r')
+
+xlabel('N datapoints')
+ylabel('mean of data')

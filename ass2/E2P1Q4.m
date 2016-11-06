@@ -14,4 +14,8 @@ for j = 1:length(a)
     pos(j) = p;
 end
 plot(a, pos)
+
+xlabel('alpha')
+ylabel('p(alpha|D, beta=1)')
+
 mean(x)

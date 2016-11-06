@@ -5,4 +5,4 @@ data = zeros(n,1);
 for i = 1:n
   theta = rand*pi - pi/2;
   data(i) = b*tan(theta) + a;
-end;  
+end
