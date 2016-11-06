@@ -6,16 +6,18 @@ for i = 1:length(data)
     xs(i,:) = fminsearch(negloglik,[0,1]);
 end
 
+a = a*ones(1,length(data));
+b = b*ones(1,length(data));
 figure(1)
 x = 1:length(data);
 plot(x,xs(:,1),'r')
 hold on
-plot(x,a,'r-')
+plot(x,a,'--m')
 hold on
 plot(x,xs(:,2),'b')
 hold on
-plot(x,b,'b-')
-legend({'\alpha estimate', '\alpha', '\beta estimate', '\beta'})
-title('Estimates of \alpha and \beta');
-xlabel('Number of data-points');
-ylabel('\alpha, \beta');
+plot(x,b,'--c')
+legend({'alpha estimate', 'true alpha', 'beta estimate', 'true beta'})
+title('Estimates of alpha and beta');
+xlabel('Number of data points');
+ylabel('alpha, beta');
