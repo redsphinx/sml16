@@ -1,4 +1,4 @@
-E2P2Q2 % generate data
+E2P2Q2 % generate data, alpha, beta
 
 xs = zeros(length(data),2);
 for i = 1:length(data)
