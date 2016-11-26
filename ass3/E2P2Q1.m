@@ -52,6 +52,7 @@ E_w = -sum(C.*log(y(X,w))+(1-C).*log(1-y(X,w)))
 E_w0 = -sum(C.*log(y(X,w0))+(1-C).*log(1-y(X,w0)))
 
 %%
+% E2 P2 Q4
 s = 0.2;
 S = eye(2)*s;
 mu1 = [0,0];
@@ -65,6 +66,7 @@ xlabel('phi_1');
 ylabel('phi_2');
 
 %%
+% E2 P2 Q5
 F = [p1,p2];
 FPs = [ones(length(F),1), F];
 
