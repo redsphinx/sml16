@@ -11,7 +11,7 @@ Blu = zeros(length(C),1);
 scatter(X(:,1),X(:,2),25,[Red Gre Blu],'fill');
 xlabel('x_1');
 ylabel('x_2');
-
+title('Two class data for logistic regression')
 %%
 % E2 P2 Q2
 

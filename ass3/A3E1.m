@@ -39,3 +39,7 @@ y = @(x) w0' + w1'.*x
 
 fplot(y, [0 1], ':') 
 hold off
+
+xlabel('x')
+ylabel('t')
+title('Predictive Gaussian Distribution with 5 sampled functions')

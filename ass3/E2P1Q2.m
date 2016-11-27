@@ -18,5 +18,5 @@ for i = 1:iters
     d = Ps'*(y(ps,w)-ts)';
     w = w - inv(H)*d;
 end
-
+w
 y(0.45,w)
