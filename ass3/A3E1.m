@@ -17,8 +17,10 @@ mu_xt = mean(data_x.*data_t)
 
 m = @(x) N*b*[1 x]*S_n*[mu_t;mu_xt]
 s2 = @(x) inv(b) + [1 x]*S_n*[1; x]
-sdp = @(x) (N*b*[1 x]*S_n*[mu_t;mu_xt])+(inv(b) + [1 x]*S_n*[1; x])^.5
-sdm = @(x)  (N*b*[1 x]*S_n*[mu_t;mu_xt])-(inv(b) + [1 x]*S_n*[1; x])^.5
+% sdp = @(x) (N*b*[1 x]*S_n*[mu_t;mu_xt])+(inv(b) + [1 x]*S_n*[1; x])^.5
+sdp = @(x) m(x) + sqrt(s2(x));
+% sdm = @(x) (N*b*[1 x]*S_n*[mu_t;mu_xt])-(inv(b) + [1 x]*S_n*[1; x])^.5
+sdm = @(x) m(x) - sqrt(s2(x));
 
 %%
 
