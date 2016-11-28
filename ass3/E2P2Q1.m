@@ -41,29 +41,35 @@ mycolormap = colormap('Jet');
 d64 = [0:63]/63; % 
 c = interp1(d64, mycolormap,cl);
 
-dotsize = 10;
+dotsize = 15;
 scatter(X(:,1),X(:,2),dotsize,c,'fill');
 xlabel('x_1');
 ylabel('x_2');
 colorbar;
+title('scatterplot of data point probabilities')
 
 %%
+%eq 4
 E_w = -sum(C.*log(y(X,w))+(1-C).*log(1-y(X,w)))
 E_w0 = -sum(C.*log(y(X,w0))+(1-C).*log(1-y(X,w0)))
 
 %%
 % E2 P2 Q4
+%covariance matrix
 s = 0.2;
 S = eye(2)*s;
+%means of the basis functions
 mu1 = [0,0];
 mu2 = [1,1];
-
+%gaussian basis functions
 p1 = mvnpdf(X,mu1,S);
 p2 = mvnpdf(X,mu2,S);
-
-scatter(p1,p2,25,[Red Gre Blu],'fill');
+%plot
+dotsize = 10.3;
+scatter(p1,p2,dotsize,[Red Gre Blu],'fill');
 xlabel('phi_1');
 ylabel('phi_2');
+title('scatterplot of the data in the feature domain')
 
 %%
 % E2 P2 Q5
@@ -85,10 +91,11 @@ mycolormap = colormap('Jet');
 d64 = [0:63]/63; % 
 c_f = interp1(d64, mycolormap,cl_f);
 
-dotsize = 10;
-scatter(F(:,1),F(:,2),dotsize,c_f,'fill');
+dotsize = 15;
+scatter(X(:,1),X(:,2),dotsize,c_f,'fill');
 xlabel('phi_1');
 ylabel('phi_2');
 colorbar;
+title('scatterplot of the data after optimization')
 
 E_wf = -sum(C.*log(y(F,wf))+(1-C).*log(1-y(F,wf)))
