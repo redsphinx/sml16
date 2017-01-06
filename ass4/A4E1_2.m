@@ -24,7 +24,8 @@ for params = 1:7
 % E1.3
 % The dimensions are 101x101
 % We can show it is positive semidefinite by showing that all of the
-% eigenvalues are >0.
+% eigenvalues are >0. Or by showing that the kernel function is made up of
+% a (linear?) combination of previously validated kernel functions.
 
 % E1.4
 % we might want a title etc.
