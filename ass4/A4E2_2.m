@@ -18,11 +18,11 @@ for i = 1:length(X)
     Yhat(i) = y;
 end
 % figure;
-surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
-title(sprintf('epoch 0'))
-%%
+% surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
+% title(sprintf('epoch 0'))
+
 % A4E2_3
-number_of_epochs = 80;
+number_of_epochs = 200;
 interval = 20;
 number_of_plots = number_of_epochs / interval;
 plot_counter = 0;
@@ -52,7 +52,7 @@ for epoch = 1:number_of_epochs
 %         surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
 %         title(sprintf('epoch: %d',epoch))
 
-        subplot(1,number_of_plots,plot_counter)
+        subplot(2,number_of_plots/2,plot_counter)
         surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
         axis square
         title(sprintf('epoch: %d',epoch))
