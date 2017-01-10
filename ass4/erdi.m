@@ -1,4 +1,8 @@
-N = 2.0;values = -N:0.1:N;[x1, x2]=meshgrid(values,values);mu = zeros(1, 2);sigma = eye(2) * 2 / 5;X = [x1(:) x2(:)];Y = mvnpdf(X, mu, sigma) * 3;
+N = 2.0;
+values = -N:0.1:N;
+[x1, x2]=meshgrid(values,values);
+mu = zeros(1, 2);sigma = eye(2) * 2 / 5;X = [x1(:) x2(:)];
+Y = mvnpdf(X, mu, sigma) * 3;
 D=2; % number of input nodes
 K=1; % number of output nodes
 M=8; % number of hidden nodes
