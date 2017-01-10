@@ -26,6 +26,13 @@ number_of_epochs = 200;
 interval = 20;
 number_of_plots = number_of_epochs / interval;
 plot_counter = 0;
+
+%to plot the initial approximation with random weights
+% subplot(2,number_of_plots/2,1)
+% surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
+% axis square
+% title(sprintf('initial'))
+        
 for epoch = 1:number_of_epochs
     epoch
     Yhat = zeros(length(X),1);
