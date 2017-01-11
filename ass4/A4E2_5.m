@@ -7,18 +7,18 @@ num = sqrt(length(X(:,1)));
 x1 = -2:0.1:2;
 x2 = x1;
 [X1, X2] = meshgrid(x1, x2);
-surf(X1, X2, reshape(Y, num, num))
+% surf(X1, X2, reshape(Y, num, num))
 
 %%
 % A4E2_6 
 % implement neural net
 D = 2; % input nodes
-M = 40; % hidden nodes
+M = 160; % hidden nodes
 % weights, with bias implied (in the +1)
 W1 = rand(D + 1, M) - 0.5;
 W2 = rand(M + 1, 1) - 0.5;
 % learning rate
-eta = 0.1;
+eta = 0.01;
 
 Yhat = zeros(length(X),1);
 for i = 1:length(X)

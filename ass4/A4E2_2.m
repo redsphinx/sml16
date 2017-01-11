@@ -17,21 +17,22 @@ for i = 1:length(X)
     y = z * W2;
     Yhat(i) = y;
 end
-% figure;
 % surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
-% title(sprintf('epoch 0'))
+% xlabel('x1')
+% ylabel('x2')
+% title(sprintf('Neural Network at epoch 0'))
 
 % A4E2_3
-number_of_epochs = 200;
-interval = 20;
+number_of_epochs = 20;
+interval = 2;
 number_of_plots = number_of_epochs / interval;
 plot_counter = 0;
 
 %to plot the initial approximation with random weights
-% subplot(2,number_of_plots/2,1)
-% surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
-% axis square
-% title(sprintf('initial'))
+subplot(2,number_of_plots/2,1)
+surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
+axis square
+title(sprintf('epoch 0'))
 Yhat = zeros(length(X),1);
 
 for epoch = 1:number_of_epochs
@@ -59,7 +60,7 @@ for epoch = 1:number_of_epochs
 %         surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
 %         title(sprintf('epoch: %d',epoch))
 
-        subplot(2,number_of_plots/2,plot_counter)
+        subplot(2,number_of_plots/2,plot_counter+1)
         surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
         axis square
         title(sprintf('epoch: %d',epoch))
