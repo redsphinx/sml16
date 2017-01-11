@@ -26,6 +26,7 @@ ylabel('x4')
 axis square
 %%
 %A4E3_2
+N = length(X); % number of samples
 K = 2; % number of classes
 PI = 1/K * ones(1,K); % a priori equal mixing coefficiens
 % Initialize the means μk to random values around the sample mean of each variable
@@ -42,4 +43,18 @@ for j=1:K
     SIGMA(:, (j-1)*4+1:j*4) = sigma_tmp;
 end
 iterations = 100;
+
 %%
+% 1. evaluate the initial value of the log likelihood - Bishop eq(9.28)
+total_log_likelihood = 0;
+for i=1:N
+    likelihood = 0;
+    for j=1:K
+        likelihood_i = PI(j) * mvnpdf(X(i,:), MU(j,:), SIGMA(:, (j-1)*4+1:j*4));
+        likelihood = likelihood + likelihood_i;
+    end
+    total_log_likelihood = total_log_likelihood + log(likelihood);
+end
+total_log_likelihood
+%%
+% 2. Evaluate the responsibilities using the current parameter values
