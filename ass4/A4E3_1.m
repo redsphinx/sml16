@@ -26,6 +26,8 @@ ylabel('x4')
 axis square
 %%
 %A4E3_2
+clc
+clearvars -except X
 N = length(X); % number of samples
 K = 2; % number of classes
 PI = 1/K * ones(1,K); % a priori equal mixing coefficiens
@@ -57,4 +59,21 @@ for i=1:N
 end
 total_log_likelihood
 %%
-% 2. Evaluate the responsibilities using the current parameter values
+% 2. Evaluate the responsibilities using the current parameter values -
+% Bishop eq(9.23)
+GAMMA = zeros(N, K); % responsibilities
+for i=1:N
+    for j=1:K
+        p_x_i = PI(j)*mvnpdf(X(i,:), MU(j), SIGMA(:, (j-1)*4+1:j*4));% top in 9.23
+        total_p_x = 0;
+        % bot in 9.23
+        for l=1:K
+            p_x = PI(l)*mvnpdf(X(i,:), MU(l), SIGMA(:, (l-1)*4+1:l*4));
+            total_p_x = total_p_x + p_x;
+        end
+        GAMMA(i,j) = p_x_i / total_p_x;
+        [i j]
+    end
+end
+% why are column 2 GAMMAs 1?
+%%
