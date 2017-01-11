@@ -63,12 +63,13 @@ for step=1:iterations
     % Bishop eq(9.23)
     
     for j=1:K
+        j
         p_x = PI(j)*mvnpdf(X, MU(j, :), SIGMA(:, :, j));% top in 9.23
         total_p_x = 0;
-        % bot in 9.23
+%         bot in 9.23
         for l=1:K
-            p_x = PI(l)*mvnpdf(X, MU(l, :), SIGMA(:, :, l));
-            total_p_x = total_p_x + p_x;
+            p_x_tmp = PI(l)*mvnpdf(X, MU(l, :), SIGMA(:, :, l));
+            total_p_x = total_p_x + p_x_tmp;
         end
         GAMMA(:,j) = p_x ./ total_p_x;
     end
@@ -76,7 +77,6 @@ for step=1:iterations
     % 3. Re-estimate the parameters using current responsibilities
     % Bishop eqs(9.24 - 9.27)
     for j=1:K
-        j
         N_k = sum(GAMMA(:,j));
         mu_new =  GAMMA(:,j)'*X;
         MU(j,:) = 1/N_k.* mu_new;
