@@ -72,8 +72,32 @@ for i=1:N
             total_p_x = total_p_x + p_x;
         end
         GAMMA(i,j) = p_x_i / total_p_x;
-        [i j]
     end
 end
-% why are column 2 GAMMAs 1?
 %%
+% 3. Re-estimate the parameters using current responsibilities
+% Bishop eqs(9.24 - 9.27)
+for j=1:K
+	N_k = sum(GAMMA(:,j));
+    for i=1:N
+        mu_new_all =  sum(GAMMA(i,j).*X(i,:));
+    end
+    MU(j) = 1/N_k * mu_new_all;
+    for i=1:N
+       sigma_new_all = sum(GAMMA(i,j).*( (X(i,:)-MU(j)) * (X(i,:)-MU(j))' ) );
+    end
+    SIGMA(:, (j-1)*4+1:j*4) = 1/N_k * sigma_new_all;
+    PI(j) = N_k/N;
+end
+%%
+% 4. Evaluate log likelihood
+total_log_likelihood = 0;
+for i=1:N
+    likelihood = 0;
+    for j=1:K
+        likelihood_i = PI(j) * mvnpdf(X(i,:), MU(j,:), SIGMA(:, (j-1)*4+1:j*4));
+        likelihood = likelihood + likelihood_i;
+    end
+    total_log_likelihood = total_log_likelihood + log(likelihood);
+end
+total_log_likelihood
