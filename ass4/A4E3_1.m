@@ -33,49 +33,46 @@ K = 2; % number of classes
 PI = 1/K * ones(1,K); % a priori equal mixing coefficiens
 % Initialize the means μk to random values around the sample mean of each variable
 MU = zeros(K, 4);
-for i=1:K
-    MU(i, :) = [mean(X(:,1)) + rand, mean(X(:,2)) + rand, mean(X(:,3)) + rand, mean(X(:,4)) + rand];
-end
 SIGMA = repmat(eye(4),1,1,K);
 for j=1:K
-    sigma_tmp = eye(4);
-    for i=1:4
-       sigma_tmp(i,:) = sigma_tmp(i,:).*(4*rand()+2);
-    end
-    SIGMA(:, :, j) = sigma_tmp;
+    MU(j, :) = [mean(X(:,1)) + rand, mean(X(:,2)) + rand, mean(X(:,3)) + rand, mean(X(:,4)) + rand];
+    SIGMA(:, :, j) = eye(4).*(4*rand(4)+2);
 end
-iterations = 100;
 
-%%
 % 1. evaluate the initial value of the log likelihood - Bishop eq(9.28)
 total_log_likelihood = 0;
 for i=1:N
     likelihood = 0;
     for j=1:K
-        likelihood_i = PI(j) * mvnpdf(X(i,:), MU(j,:), SIGMA(:, (j-1)*4+1:j*4));
+        likelihood_i = PI(j) * mvnpdf(X(i,:), MU(j,:), SIGMA(:, :, j));
         likelihood = likelihood + likelihood_i;
     end
     total_log_likelihood = total_log_likelihood + log(likelihood);
 end
 total_log_likelihood
-GAMMA = zeros(N, K); % responsibilities
+
+
 %%
+iterations = 50;
+store_log_likelihoods = zeros(1, iterations);
+GAMMA = zeros(N, K); % responsibilities
+
 for step=1:iterations
+    step
     % 2. Evaluate the responsibilities using the current parameter values -
     % Bishop eq(9.23)
     
-    for i=1:N
-        for j=1:K
-            p_x_i = PI(j)*mvnpdf(X(i,:), MU(j), SIGMA(:, :, j));% top in 9.23
-            total_p_x = 0;
-            % bot in 9.23
-            for l=1:K
-                p_x = PI(l)*mvnpdf(X(i,:), MU(l), SIGMA(:, :, l));
-                total_p_x = total_p_x + p_x;
-            end
-            GAMMA(i,j) = p_x_i / total_p_x;
+    for j=1:K
+        p_x = PI(j)*mvnpdf(X, MU(j, :), SIGMA(:, :, j));% top in 9.23
+        total_p_x = 0;
+        % bot in 9.23
+        for l=1:K
+            p_x = PI(l)*mvnpdf(X, MU(l, :), SIGMA(:, :, l));
+            total_p_x = total_p_x + p_x;
         end
+        GAMMA(:,j) = p_x ./ total_p_x;
     end
+
 
     % 3. Re-estimate the parameters using current responsibilities
     % Bishop eqs(9.24 - 9.27)
@@ -87,7 +84,7 @@ for step=1:iterations
         MU(j) = 1/N_k * mu_new_all;
         sigma_new_all = zeros(4, 4);
         for i=1:N
-           sigma_new = GAMMA(i,j).*( (X(i,:)-MU(j))' * (X(i,:)-MU(j)) ) ;
+           sigma_new = GAMMA(i,j).*( (X(i,:)-MU(j, :))' * (X(i,:)-MU(j, :)) ) ;
            sigma_new_all = sigma_new_all + sigma_new;
         end
         SIGMA(:, :, j) = 1/N_k * sigma_new_all;
@@ -104,6 +101,8 @@ for step=1:iterations
         end
         total_log_likelihood = total_log_likelihood + log(likelihood);
     end
-    total_log_likelihood
-
+%     total_log_likelihood
+    store_log_likelihoods(step) = total_log_likelihood;
 end
+
+plot(store_log_likelihoods)
