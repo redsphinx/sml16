@@ -51,7 +51,7 @@ total_log_likelihood
 
 
 %%
-iterations = 50;
+iterations = 100;
 store_log_likelihoods = zeros(1, iterations);
 GAMMA = zeros(N, K); % responsibilities
 
@@ -99,3 +99,25 @@ for step=1:iterations
 end
 
 plot(store_log_likelihoods)
+%%
+probability = zeros(2000, 1);
+classes = zeros(2000, 1);
+
+for i = 1:K
+    predictions = mvnpdf(X, MU(i,:), SIGMA(:,:,i));
+    classes(predictions > probability) = i;
+    probability(predictions > probability) = predictions(predictions > probability);
+end
+color = 'rgbkcym';
+
+hold on
+for i = 1:K
+    matches = X(classes == i, :);
+    plot(matches(:, 3), matches(:,2), [color(i) 'o'])
+    axis square
+end
+xlabel('x1')
+ylabel('x2')
+title('Class Probability of x1 and x2')
+legend('class 1', 'class 2')
+hold off
