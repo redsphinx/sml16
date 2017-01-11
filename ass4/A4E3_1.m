@@ -121,3 +121,16 @@ ylabel('x2')
 title('Class Probability of x1 and x2')
 legend('class 1', 'class 2')
 hold off
+%%
+X1 = [];
+X2 = [];
+
+for i=1:N
+   if GAMMA(i, 1) >  GAMMA(i, 2)
+       X1 = [X1; X(i, :)];
+   else
+       X2 = [X2; X(i, :)];
+   end
+end
+rho_1 = cov(X1(:,1), X1(:,2)) / sqrt( var(X1(:,1)) * var(X1(:,2)));
+rho_2 = cov(X2(:,1), X2(:,2)) / sqrt( var(X2(:,1)) * var(X2(:,2)));
