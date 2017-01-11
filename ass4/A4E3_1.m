@@ -73,21 +73,19 @@ for step=1:iterations
         GAMMA(:,j) = p_x ./ total_p_x;
     end
 
-
     % 3. Re-estimate the parameters using current responsibilities
     % Bishop eqs(9.24 - 9.27)
     for j=1:K
+        j
         N_k = sum(GAMMA(:,j));
-        for i=1:N
-            mu_new_all =  sum(GAMMA(i,j).*X(i,:));
-        end
-        MU(j) = 1/N_k * mu_new_all;
+        mu_new =  GAMMA(:,j)'*X;
+        MU(j,:) = 1/N_k.* mu_new;
         sigma_new_all = zeros(4, 4);
         for i=1:N
-           sigma_new = GAMMA(i,j).*( (X(i,:)-MU(j, :))' * (X(i,:)-MU(j, :)) ) ;
-           sigma_new_all = sigma_new_all + sigma_new;
+            sigma_new = GAMMA(i,j).*( (X(i,:)-MU(j, :))' * (X(i,:)-MU(j, :)) ) ;
+            sigma_new_all = sigma_new_all + sigma_new;
         end
-        SIGMA(:, :, j) = 1/N_k * sigma_new_all;
+        SIGMA(:, :, j) = 1/N_k * sigma_new;
         PI(j) = N_k/N;
     end
  
