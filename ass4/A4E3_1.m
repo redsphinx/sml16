@@ -40,15 +40,13 @@ for j=1:K
 end
 
 % 1. evaluate the initial value of the log likelihood - Bishop eq(9.28)
-total_log_likelihood = 0;
-for i=1:N
-    likelihood = 0;
-    for j=1:K
-        likelihood_i = PI(j) * mvnpdf(X(i,:), MU(j,:), SIGMA(:, :, j));
-        likelihood = likelihood + likelihood_i;
-    end
-    total_log_likelihood = total_log_likelihood + log(likelihood);
+likelihood = 0;
+for j=1:K
+    likelihood_i = PI(j) * mvnpdf(X, MU(j,:), SIGMA(:, :, j));
+    likelihood = likelihood + likelihood_i;
 end
+total_log_likelihood = sum(log(likelihood));
+
 total_log_likelihood
 
 
@@ -63,7 +61,6 @@ for step=1:iterations
     % Bishop eq(9.23)
     
     for j=1:K
-        j
         p_x = PI(j)*mvnpdf(X, MU(j, :), SIGMA(:, :, j));% top in 9.23
         total_p_x = 0;
 %         bot in 9.23
@@ -90,15 +87,13 @@ for step=1:iterations
     end
  
     % 4. Evaluate log likelihood
-    total_log_likelihood = 0;
-    for i=1:N
-        likelihood = 0;
-        for j=1:K
-            likelihood_i = PI(j) * mvnpdf(X(i,:), MU(j,:), SIGMA(:, :, j));
-            likelihood = likelihood + likelihood_i;
-        end
-        total_log_likelihood = total_log_likelihood + log(likelihood);
+    likelihood = 0;
+    for j=1:K
+        likelihood_i = PI(j) * mvnpdf(X, MU(j,:), SIGMA(:, :, j));
+        likelihood = likelihood + likelihood_i;
     end
+    total_log_likelihood = sum(log(likelihood));
+
 %     total_log_likelihood
     store_log_likelihoods(step) = total_log_likelihood;
 end
