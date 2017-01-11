@@ -100,8 +100,8 @@ end
 
 plot(store_log_likelihoods)
 %%
-probability = zeros(2000, 1);
-classes = zeros(2000, 1);
+probability = zeros(N, 1);
+classes = zeros(N, 1);
 
 for i = 1:K
     predictions = mvnpdf(X, MU(i,:), SIGMA(:,:,i));
@@ -132,5 +132,6 @@ for i=1:N
        X2 = [X2; X(i, :)];
    end
 end
-rho_1 = cov(X1(:,1), X1(:,2)) / sqrt( var(X1(:,1)) * var(X1(:,2)));
-rho_2 = cov(X2(:,1), X2(:,2)) / sqrt( var(X2(:,1)) * var(X2(:,2)));
+rho_1 = SIGMA(1:2, 3:4, 1) ./ sqrt( var(X1(:,1)) * var(X1(:,2)));
+rho_2 = SIGMA(1:2, 3:4, 2) ./ sqrt( var(X2(:,1)) * var(X2(:,2)));
+%%
