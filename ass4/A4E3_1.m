@@ -85,7 +85,7 @@ for step=1:iterations
             sigma_new = GAMMA(i,j).*( (X(i,:)-MU(j, :))' * (X(i,:)-MU(j, :)) ) ;
             sigma_new_all = sigma_new_all + sigma_new;
         end
-        SIGMA(:, :, j) = 1/N_k * sigma_new;
+        SIGMA(:, :, j) = 1/N_k * sigma_new_all;
         PI(j) = N_k/N;
     end
  
