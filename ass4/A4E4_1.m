@@ -4,6 +4,7 @@ clear
 N = 800; 
 D = 28*28; 
 X = uint8(zeros(N,D));
+XX = double(X);
 fid = fopen ('a012_images.dat', 'r');
 for i = 1:N
     X(i,:) = fread(fid, [D], 'uint8');
@@ -21,7 +22,7 @@ end
 %%
 % A4E_2
 clc
-clearvars -except X N D
+clearvars -except X N D XX
 N = length(X); % number of samples
 K = 3; % number of classes, 3
 PI = 1/K * ones(1,K); % a priori equal mixing coefficiens
@@ -30,18 +31,16 @@ MU = 0.5.*rand(K, D) + 0.25;
 
 % 1. evaluate the initial value of the log likelihood - Bishop eq(9.28)
 likelihood = 0;
-p_x_mu = 1;
 for j=1:K
-
-    p_x_mu = p_x_mu * binopdf(X, 1, repmat(MU(j,:), N,1));
-
-	likelihood_i = PI(j) * p_x_mu;
+    p_x_mu = binopdf(X, 1, repmat(MU(j,:), N,1)); %log of 9.44
+    p_x_mu = log(p_x_mu);
+    p_x_mu = sum(p_x_mu, 2);
+	likelihood_i = log(PI(j)) * p_x_mu;
 	likelihood = likelihood + likelihood_i;
 end
-total_log_likelihood = sum(log(likelihood));
+total_log_likelihood = sum(likelihood);
 
 total_log_likelihood
-
 
 %%
 iterations = 100;
@@ -54,11 +53,13 @@ for step=1:iterations
     % Bishop eq(9.23)
     
     for j=1:K
-        p_x = PI(j)*mvnpdf(X, MU(j, :), SIGMA(:, :, j));% top in 9.23
+        p_x = log(PI(j) * binopdf(X, 1, repmat(MU(j,:), N,1)));
+        p_x = sum(p_x, 2);
         total_p_x = 0;
 %         bot in 9.23
         for l=1:K
-            p_x_tmp = PI(l)*mvnpdf(X, MU(l, :), SIGMA(:, :, l));
+            p_x_tmp = log(PI(l)*binopdf(X, 1, repmat(MU(j,:), N,1)));
+            p_x_tmp = sum(p_x_tmp, 2);
             total_p_x = total_p_x + p_x_tmp;
         end
         GAMMA(:,j) = p_x ./ total_p_x;
@@ -68,27 +69,25 @@ for step=1:iterations
     % Bishop eqs(9.24 - 9.27)
     for j=1:K
         N_k = sum(GAMMA(:,j));
-        mu_new =  GAMMA(:,j)'*X;
+        mu_new =  GAMMA(:,j)'*XX;
         MU(j,:) = 1/N_k.* mu_new;
-        sigma_new_all = zeros(4, 4);
-        for i=1:N
-            sigma_new = GAMMA(i,j).*( (X(i,:)-MU(j, :))' * (X(i,:)-MU(j, :)) ) ;
-            sigma_new_all = sigma_new_all + sigma_new;
-        end
-        SIGMA(:, :, j) = 1/N_k * sigma_new_all;
         PI(j) = N_k/N;
     end
- 
-    % 4. Evaluate log likelihood
+
+    
+    % 1. evaluate the initial value of the log likelihood - Bishop eq(9.28)
     likelihood = 0;
     for j=1:K
-        likelihood_i = PI(j) * mvnpdf(X, MU(j,:), SIGMA(:, :, j));
+        p_x_mu = log(binopdf(X, 1, repmat(MU(j,:), N,1))); %log of 9.44
+        p_x_mu = sum(p_x_mu, 2);
+        likelihood_i = PI(j) * p_x_mu;
         likelihood = likelihood + likelihood_i;
     end
-    total_log_likelihood = sum(log(likelihood));
+    total_log_likelihood = sum(likelihood);
 
-%     total_log_likelihood
-    store_log_likelihoods(step) = total_log_likelihood;
+    total_log_likelihood
+	store_log_likelihoods(step) = total_log_likelihood;
+
 end
 
 plot(store_log_likelihoods)

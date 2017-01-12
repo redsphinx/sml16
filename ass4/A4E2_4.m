@@ -5,10 +5,16 @@ A4E2_1 % execute script to make data X and Y
 D = 2; % input nodes
 M = 8; % hidden nodes
 % weights, with bias implied (in the +1)
-W1 = rand(D + 1, M) - 0.5;
-W2 = rand(M + 1, 1) - 0.5;
+
+range_w = 0.5;
+a = -range_w;
+b = range_w;
+W1 = (b-a).*rand(D + 1, M) + a;
+W2 = (b-a).*rand(M + 1, 1) + a;
+% W1 = rand(D + 1, M) - range_w;
+% W2 = rand(M + 1, 1) - range_w;
 % learning rate
-eta = 0.1;
+eta = 0.60;
 
 Yhat = zeros(length(X),1);
 for i = 1:length(X)
@@ -22,8 +28,8 @@ end
 % title(sprintf('epoch 0'))
 
 % A4E2_3
-number_of_epochs = 500;
-interval = 50;
+number_of_epochs = 100;
+interval = 10;
 number_of_plots = number_of_epochs / interval;
 plot_counter = 0;
 
@@ -32,7 +38,7 @@ plot_counter = 0;
 % surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
 % axis square
 % title(sprintf('initial'))
-
+tic
 for epoch = 1:number_of_epochs
     sequence = randperm(length(X));
     epoch
@@ -54,16 +60,16 @@ for epoch = 1:number_of_epochs
         W1 = W1 - eta * dEdW1';
         W2 = W2 - eta * dEdW2;
     end
-    if(mod(epoch,interval) == 0)
-        plot_counter = plot_counter + 1;
-%         sprintf('plot')
-%         figure;
+%     if(mod(epoch,interval) == 0)
+%         plot_counter = plot_counter + 1;
+% 
+%         subplot(2,number_of_plots/2,plot_counter)
 %         surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
+%         axis square
 %         title(sprintf('epoch: %d',epoch))
-
-        subplot(2,number_of_plots/2,plot_counter)
-        surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
-        axis square
-        title(sprintf('epoch: %d',epoch))
-    end
+%     end
 end
+toc
+surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
+axis square
+title([' M: ' num2str(M) ' eta: ' num2str(eta) ' W: ' num2str(range_w)])
