@@ -9,13 +9,15 @@ for i = 1:N
 end;
 status = fclose(fid);
 
+X = double(X);
+
 BW_map=[1,1,1; 0,0,0]; 
 dims = sqrt(D);
 
 for i = 1:10
-    figure
-    image(reshape(X(i,:),[dims,dims]))
-    colormap(BW_map);
+%     figure
+%     image(reshape(X(i,:),[dims,dims]))
+%     colormap(BW_map);
 end
 
 %% Bernoulli MM
@@ -28,7 +30,7 @@ dims = size(X,2);
 pis = zeros(1,K) + 1/K; %responsibilities
 
 %% log likelihood + E Step
-cycles = 40;
+cycles = 100;
 reps = 1;
 loglik = zeros(cycles,reps);
 
@@ -42,53 +44,37 @@ for i = 1:cycles
     pi_log_pX = zeros(K,N);
     pi_pX = zeros(K,N);
     respb = zeros(K,N);  
-    Nks = zeros(1,K);
     for k = 1:K
         log_pX_k = log(binopdf(X, 1, repmat(mus(k,:), N,1)));
+        log_pX_k(log_pX_k == -Inf) = 0;
         sum_log_pX_k = sum(log_pX_k,2);
         pi_log_pX(k,:) = (log(pis(k))+sum_log_pX_k)';
         pi_pX(k,:) = (pis(k) * exp(sum_log_pX_k))';
     end
     
     for k = 1:K
-%         respb(k,:) = pi_log_pX(k,:)./sum(pi_log_pX);
         respb(k,:) = pi_pX(k,:)./sum(pi_pX);
+        Nk = sum(respb(k,:),2);
+        pis(k) = Nk/N;
+        mus(k,:) = (respb(k,:)*X)/Nk;
     end
     
     %% calculate log prob
     loglik(i) = sum(sum(respb.*pi_log_pX));
     
     %% M Step
-    pis = sum(respb,2)/N;
-    
-    ln_pX = 0;
-    pxns = zeros(N,K);
-    for k = 1:K
-        pxn = pis(k)*mvnpdf(X,mus(k,:),sigmas(:,:,k));
-        pxns(:,k) = pxn;
-    end
-    ln_pX = sum(log(sum(pxns,2)));
-    for k = 1:K
-        respb(:,k) = pxns(:,k)./sum(pxns,2);
-    end
-
-    loglik(i,rep) = ln_pX;
-%% M Step
-    Nks = sum(respb);
-    for k = 1:K
-%         mus(k,:) = sum(bsxfun(@times,respb(:,k),X))/Nks(k);
-        mus(k,:) = (respb(:,k)'*X)/Nks(k);
-    end
-    for k = 1:K
-        varx = bsxfun(@minus,X,mus(k,:));
-        sigmaskn = bsxfun(@times, permute(varx', [1 3 2]), permute(varx', [3 1 2]));
-        sigmak = sum(permute(repmat(respb(:,k),1,4,4), [2 3 1]).*sigmaskn,3)/Nks(k);
-        sigmas(:,:,k) = sigmak;
-    end
-    pis = Nks/N;
 end
 % end
 plot(1:length(loglik),loglik)
+
+%%
+
+for k = 1:K
+	img = mus(k,:)*255;
+    figure;
+    image(reshape(img,[28,28]))
+    colormap(gray(255));
+end
 
 %% figure out class assignments and plot
 classignments = double(bsxfun(@eq, respb, max(respb, [], 2)));
