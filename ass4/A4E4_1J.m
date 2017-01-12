@@ -40,18 +40,23 @@ respb = zeros(N,K);
 %%
 for i = 1:cycles
     pi_log_pX = zeros(K,N);
+    pi_pX = zeros(K,N);
     respb = zeros(K,N);    
     for k = 1:K
         log_pX_k = log(binopdf(X, 1, repmat(mus(k,:), N,1)));
-        pi_log_pX(k,:) = log(pis(k))+sum(log_pX_k,2);
+        pi_log_pX(k,:) = (log(pis(k))+sum(log_pX_k,2))';
+        pi_pX(k,:) = (pis(k) * exp(sum(log_pX_k,2)))';
     end
     
     for k = 1:K
-        respb(k,:) = pi_log_pX(k,:)./sum(pi_log_pX);
+%         respb(k,:) = pi_log_pX(k,:)./sum(pi_log_pX);
+        respb(k,:) = pi_pX(k,:)./sum(pi_pX);
     end
     
     %% calculate log prob
-    sum(sum(respb.*pi_log_pX));
+    loglik(i) = sum(sum(respb.*pi_log_pX));
+    
+    %% M Step
     
     ln_pX = 0;
     pxns = zeros(N,K);
