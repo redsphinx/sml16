@@ -30,10 +30,10 @@ MU = 0.5.*rand(K, D) + 0.25;
 
 % 1. evaluate the initial value of the log likelihood - Bishop eq(9.28)
 likelihood = 0;
-p_x_mu = [];
+p_x_mu = 1;
 for j=1:K
 
-    p_x_mu = p_x_mu * binopdf(X, 1, MU(j,i));
+    p_x_mu = p_x_mu * binopdf(X, 1, repmat(MU(j,:), N,1));
 
 	likelihood_i = PI(j) * p_x_mu;
 	likelihood = likelihood + likelihood_i;

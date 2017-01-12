@@ -1,5 +1,6 @@
 clc
 clear
+
 %%
 N = 800; D = 28*28; X = uint8(zeros(N,D));
 fid = fopen ('a012_images.dat', 'r');
@@ -24,7 +25,7 @@ clc
 K = 3;
 N = size(X,1);
 dims = size(X,2);
-pis = zeros(1,K) + 1/K;
+pis = zeros(1,K) + 1/K; %responsibilities
 
 %% log likelihood + E Step
 cycles = 40;
