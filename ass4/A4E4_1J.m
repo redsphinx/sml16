@@ -18,6 +18,7 @@ for i = 1:10
 %     colormap(BW_map);
 end
 
+XX = X;
 X = double(X);
 %% Bernoulli MM
 K = 3;
@@ -84,4 +85,9 @@ Z = fread(fid, N, 'uint8');
 %%
 diff = labels - Z;
 misclass = find(diff);
-misimages = X(misclass(1:4),:);
+misimages = XX(misclass(1:4),:);
+for i = 1:4
+ 	figure
+ 	image(reshape(misimages(i,:),[28,28]))
+    colormap(BW_map);
+end
