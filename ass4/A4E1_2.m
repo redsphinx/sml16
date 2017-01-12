@@ -12,7 +12,8 @@ N = linspace(-1,1,101);
 n = length(N);
 K = zeros(n,n);
 
-for params = 1:7
+for params = 2:7
+
     th = thetas(params,:);
 
     for i = 1:n
@@ -26,16 +27,27 @@ for params = 1:7
 % We can show it is positive semidefinite by showing that all of the
 % eigenvalues are >0. Or by showing that the kernel function is made up of
 % a (linear?) combination of previously validated kernel functions.
-
+    size(K)
+    min(eig(K))
+    
+    
 % E1.4
 % we might want a title etc.
+
+%         sprintf('plot')
+%         figure;
+%         surf(X1, X2, reshape(Yhat, length(x1), length(x2)))
+%         title(sprintf('epoch: %d',epoch))
+
+    subplot(2,3,params-1)
     Y = mvnrnd(zeros(1,101),K,5);
     plot(N,Y);
     ylim([-10,10]);
-%     title(th);
-    saveas(gcf, sprintf('E1_4_gpPrior_params%d.png',params));   
+    title(strcat('th =[',num2str(th),']'));
+    xlabel('X')
+    ylabel('y(X)')
 end
-
+saveas(gcf, sprintf('E1_4_gpPrior_paramsALL.png',params));   
 %%
  
 D = [-0.5, 0.5; 0.2, -1; 0.3, 3; -0.1, -2.5];
@@ -57,10 +69,10 @@ k = zeros(d,1);
 for i = 1:d
     k(i,1) = kkernel(th,D(i,1),0);
 end
-c = kkernel(th,0,0)+1
+c = kkernel(th,0,0)+1;
 
-mean_N1 = k'*inv(C)*D(:,2);
-sigma_N1 = c-k'*inv(C)*k;
+mean_N1 = k'*inv(C)*D(:,2)
+sigma_N1 = c-k'*inv(C)*k
 
 %%
 % By setting th2 and th3 to 0, the mean of the conditional distribution

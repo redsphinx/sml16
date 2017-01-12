@@ -1,24 +1,27 @@
 %% EM Algorithm
 clc
-clearvars -except X
+clearvars
 % number of clusters
+
+X = load('a011_mixdata.txt', '-ASCII');
+%% Set K and mixing coefficients
 K = 4;
 N = length(X);
 dims = size(X,2);
 pis = zeros(1,K) + 1/K;
 
-%% log likelihood + E Step
-cycles = 40;
+cycles = 50;
 reps = 10;
 loglik = zeros(cycles,reps);
 
 for rep = 1:reps
+%% Randomly initialize parameters Mu and Sigma
     mus = repmat(mean(X),K,1) + (rand(K, dims)-0.5)*2;
     sigmas = repmat(eye(4)*(4*rand()+2),1,1,K);
 
     respb = zeros(N,K);
-
     for i = 1:cycles
+        %% log likelihood + E Step
         ln_pX = 0;
         pxns = zeros(N,K);
         for k = 1:K
@@ -31,10 +34,9 @@ for rep = 1:reps
         end
 
         loglik(i,rep) = ln_pX;
-    %% M Step
+        %% M Step
         Nks = sum(respb);
         for k = 1:K
-    %         mus(k,:) = sum(bsxfun(@times,respb(:,k),X))/Nks(k);
             mus(k,:) = (respb(:,k)'*X)/Nks(k);
         end
         for k = 1:K
@@ -47,6 +49,9 @@ for rep = 1:reps
     end
 end
 plot(1:length(loglik),loglik)
+title('Log-Likelihood of Data over 50 EM cycles')
+xlabel('EM Cycle')
+ylabel('Log-Likelihood')
 
 %% figure out class assignments and plot
 classignments = double(bsxfun(@eq, respb, max(respb, [], 2)));
@@ -61,9 +66,11 @@ colors = 'rgbp';
 for k = 1:K
     scatter(X(classignments(:,K-k+1)==1,1),X(classignments(:,K-k+1)==1,2),colors(k));
 end
-title('Class assignments after 40 EM cycles')
+title('Class assignments after 50 EM cycles')
 xlabel('x1')
 ylabel('x2')
+
+sum(classignments)
 %% assign classes to new datapoints
 
 data = [11.85,2.2,0.5,4.0;

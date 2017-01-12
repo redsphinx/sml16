@@ -36,10 +36,18 @@ mus = rand(K, dims)/2+0.25;
 % sigmas = repmat(eye(4)*(4*rand()+2),1,1,K);
 
 respb = zeros(N,K);
-
+%%
 for i = 1:cycles
+    for k = 1:K
+        repmus = repmat(mus(k,:),800,1);
+        probk = binopdf(X,1,repmus);
+        logprobk = log(probk);
+        logprobk = sum(logprobk,2)
+        logprobk = log(pis(k))+logprobk
     ln_pX = 0;
     pxns = zeros(N,K);
+    
+    
     for k = 1:K
         pxn = pis(k)*mvnpdf(X,mus(k,:),sigmas(:,:,k));
         pxns(:,k) = pxn;

@@ -1,28 +1,34 @@
 %A4E3_1
 X = load('a011_mixdata.txt', '-ASCII');
 %%
+
+%%
 subplot(2,2,1)
-scatter(X(:,1), X(:,2))
+scatter3(X(:,1), X(:,2), X(:,3))
 xlabel('x1')
 ylabel('x2')
+zlabel('x3')
 axis square
 
 subplot(2,2,2)
-scatter(X(:,2), X(:,3))
+scatter3(X(:,2), X(:,3), X(:,4))
 xlabel('x2')
 ylabel('x3')
+zlabel('x4')
 axis square
 
 subplot(2,2,3)
-scatter(X(:,3), X(:,4))
+scatter3(X(:,3), X(:,4),X(:,1))
 xlabel('x3')
 ylabel('x4')
+zlabel('x1')
 axis square
 
 subplot(2,2,4)
-scatter(X(:,1), X(:,4))
+scatter3(X(:,1), X(:,2), X(:,4))
 xlabel('x1')
-ylabel('x4')
+ylabel('x2')
+zlabel('x4')
 axis square
 %%
 %A4E3_2
@@ -31,7 +37,7 @@ clearvars -except X
 N = length(X); % number of samples
 K = 2; % number of classes
 PI = 1/K * ones(1,K); % a priori equal mixing coefficiens
-% Initialize the means μk to random values around the sample mean of each variable
+% Initialize the means ??k to random values around the sample mean of each variable
 MU = zeros(K, 4);
 SIGMA = repmat(eye(4),1,1,K);
 for j=1:K
