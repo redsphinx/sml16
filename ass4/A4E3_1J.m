@@ -8,8 +8,8 @@ dims = size(X,2);
 pis = zeros(1,K) + 1/K;
 
 %% log likelihood + E Step
-cycles = 100;
-reps = 5;
+cycles = 40;
+reps = 10;
 loglik = zeros(cycles,reps);
 
 for rep = 1:reps
@@ -61,7 +61,9 @@ colors = 'rgbp';
 for k = 1:K
     scatter(X(classignments(:,K-k+1)==1,1),X(classignments(:,K-k+1)==1,2),colors(k));
 end
-
+title('Class assignments after 40 EM cycles')
+xlabel('x1')
+ylabel('x2')
 %% assign classes to new datapoints
 
 data = [11.85,2.2,0.5,4.0;
