@@ -1,6 +1,6 @@
 clc
 clear
-
+rng(45)
 %%
 N = 800; D = 28*28; X = uint8(zeros(N,D));
 fid = fopen ('a012_images.dat', 'r');
@@ -20,9 +20,6 @@ end
 
 X = double(X);
 %% Bernoulli MM
-clc
-% clearvars -except X
-% number of clusters
 K = 3;
 N = size(X,1);
 dims = size(X,2);
@@ -77,12 +74,14 @@ end
 
 %% figure out class assignments and plot
 classignments = round(respb);
-classignments(1,:) = classignments(1,:)*2;
-classignments(2,:) = classignments(2,:)*4;
-classignments(3,:) = classignments(3,:)*3;
+classignments(1,:) = classignments(1,:)*4;
+classignments(2,:) = classignments(2,:)*3;
+classignments(3,:) = classignments(3,:)*2;
 labels = sum(classignments)';
-
 %% assign classes to new datapoints
 fid = fopen ('a012_labels.dat', 'r');
 Z = fread(fid, N, 'uint8');
-
+%%
+diff = labels - Z;
+misclass = find(diff);
+misimages = X(misclass(1:4),:);
