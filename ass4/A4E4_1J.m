@@ -9,17 +9,16 @@ for i = 1:N
 end;
 status = fclose(fid);
 
-X = double(X);
-
 BW_map=[1,1,1; 0,0,0]; 
 dims = sqrt(D);
 
 for i = 1:10
-%     figure
-%     image(reshape(X(i,:),[dims,dims]))
+% 	figure
+% 	image(reshape(X(i,:),[28,28]))
 %     colormap(BW_map);
 end
 
+X = double(X);
 %% Bernoulli MM
 clc
 % clearvars -except X
@@ -30,7 +29,7 @@ dims = size(X,2);
 pis = zeros(1,K) + 1/K; %responsibilities
 
 %% log likelihood + E Step
-cycles = 100;
+cycles = 40;
 reps = 1;
 loglik = zeros(cycles,reps);
 
@@ -77,38 +76,13 @@ for k = 1:K
 end
 
 %% figure out class assignments and plot
-classignments = double(bsxfun(@eq, respb, max(respb, [], 2)));
-correff = zeros(1,K);
-for k = 1:K
-    correff(k) = sigmas(1,2,k)/sqrt(sigmas(1,1,k)*sigmas(2,2,k));
-end
-correff
+classignments = round(respb);
+classignments(1,:) = classignments(1,:)*2;
+classignments(2,:) = classignments(2,:)*4;
+classignments(3,:) = classignments(3,:)*3;
+labels = sum(classignments)';
 
-hold on;
-colors = 'rgbp';
-for k = 1:K
-    scatter(X(classignments(:,K-k+1)==1,1),X(classignments(:,K-k+1)==1,2),colors(k));
-end
-title('Class assignments after 40 EM cycles')
-xlabel('x1')
-ylabel('x2')
 %% assign classes to new datapoints
+fid = fopen ('a012_labels.dat', 'r');
+Z = fread(fid, N, 'uint8');
 
-data = [11.85,2.2,0.5,4.0;
-    11.95,3.1,0.0,1.0;
-    12.0,2.5,0.0,2.0;
-    12.0,3.0,1.0,6.3];
-datarsp = zeros(length(data),K);
-for d = 1:length(data)
-    sumpxn = 0;
-    pxns = zeros(1,K);
-    for k = 1:K
-        pxn = pis(k)*mvnpdf(data(d,:),mus(k,:),sigmas(:,:,k));
-        sumpxn = sumpxn+pxn;
-        pxns(k) = pxn;
-    end
-    for k = 1:K
-        datarsp(d,k) = pxns(k)/sumpxn;
-    end
-end
-datarsp
